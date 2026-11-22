@@ -1,0 +1,10 @@
+{
+  "description": "Presenta el perfil, las habilidades, herramientas y proceso creativo de una diseñadora multimedia mediante un portafolio editorial para equipos creativos y posibles clientes.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
