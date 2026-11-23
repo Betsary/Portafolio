@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import heroPortrait from "./assets/portfolio/86bb5c61-1745-4be2-b8f0-d74e059c4a0e.png";
 import devilIcon from "./assets/portfolio/74e6be28-23a1-4e78-88e5-ac69fe9353ef.png";
 import creaturePortrait from "./assets/portfolio/5cf9974e-73eb-4e5f-a8f9-376f238bc8b3.png";
@@ -291,6 +291,10 @@ function ToolIcon({ id, mark, asset }: (typeof tools)[number]) {
 
 function App() {
   const [activePhoto, setActivePhoto] = useState(0);
+  useEffect(() => {
+    document.title = "BetsaryMoon.exe";
+  }, []);
+
   const [stackRatio, setStackRatio] = useState("4 / 3");
   const [selectedCategory, setSelectedCategory] = useState<GalleryCategory>("TODO");
   const [sysOpen, setSysOpen] = useState(false);
@@ -310,6 +314,11 @@ function App() {
   const handleNextPhoto = () => {
     if (!visibleItems.length) return;
     setActivePhoto((prev) => (prev + 1) % visibleItems.length);
+  };
+
+  const handlePreviousPhoto = () => {
+    if (!visibleItems.length) return;
+    setActivePhoto((prev) => (prev - 1 + visibleItems.length) % visibleItems.length);
   };
 
   const handleSelectCategory = (cat: GalleryCategory) => {
@@ -443,7 +452,6 @@ function App() {
           <i />
           SIGNAL UNSTABLE
         </div>
-        <div className="section-index">01 / PERFIL</div>
         <div className="profile-title">
           <h2>
             No diseño para
@@ -718,15 +726,18 @@ function App() {
           .survival-hud-left {
             top: 18px;
             left: 5vw;
+              font-size: 15px;
           }
           .survival-hud-left span {
             padding: 4px 6px;
             background: #761417;
             color: #e8e4dc;
+            font-size: 15px;
           }
           .survival-hud-right {
             top: 22px;
             right: 5vw;
+            font-size: 15px;
           }
           .survival-hud-right i {
             width: 7px;
@@ -811,7 +822,6 @@ function App() {
           SIGNAL UNSTABLE
         </div>
         <div className="survival-glitch-bar" aria-hidden="true" />
-        <div className="section-index light">02 / ARCHIVO VISUAL</div>
         <div className="work-heading">
           <h2>
             PERSONAJES,
@@ -821,7 +831,7 @@ function App() {
           <div>
             <p>
               Una selección de exploraciones digitales y análogas. Haz clic sobre las fotos apiladas
-              para pasar a la siguiente pieza.
+              o utiliza los controles para recorrer el archivo en ambas direcciones.
             </p>
             <div
               className="flex flex-wrap gap-2 mt-5"
@@ -858,9 +868,12 @@ function App() {
             tabIndex={0}
             aria-label="Pasar a la siguiente fotografía del archivo visual"
             onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
+              if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
                 e.preventDefault();
                 handleNextPhoto();
+              } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                handlePreviousPhoto();
               }
             }}
           >
@@ -914,12 +927,37 @@ function App() {
               );
             })}
           </div>
+
+          <div className="flex items-center justify-center gap-5 mt-6" role="group" aria-label="Controles del archivo visual">
+            <button
+              type="button"
+              onClick={handlePreviousPhoto}
+              disabled={visibleItems.length <= 1}
+              className="border border-[#555] px-4 py-2 text-[10px] tracking-[0.14em] uppercase text-[#e8e4dc] hover:border-[#e51b23] hover:text-[#e51b23] disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
+              aria-label="Ver fotografía anterior"
+            >
+              ← ANTERIOR
+            </button>
+            <span className="text-[10px] tracking-[0.14em] text-[#aaa] tabular-nums">
+              {String(safeIndex + 1).padStart(2, "0")} / {String(visibleItems.length).padStart(2, "0")}
+            </span>
+            <button
+              type="button"
+              onClick={handleNextPhoto}
+              disabled={visibleItems.length <= 1}
+              className="border border-[#555] px-4 py-2 text-[10px] tracking-[0.14em] uppercase text-[#e8e4dc] hover:border-[#e51b23] hover:text-[#e51b23] disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
+              aria-label="Ver fotografía siguiente"
+            >
+              SIGUIENTE →
+            </button>
+          </div>
+
           {currentVisibleItem && (
             <p className="text-[10px] tracking-[0.12em] text-[#aaa] mt-6 text-center max-w-xl">
               LOG [{currentVisibleItem.category}] // {currentVisibleItem.logNote}
             </p>
           )}
-          <p className="stack-hint">[ HAZ CLIC EN LA FOTO PARA PASAR A LA SIGUIENTE ]</p>
+          <p className="stack-hint">[ USA ← / → O LOS CONTROLES PARA RECORRER EL ARCHIVO ]</p>
         </div>
 
         <div className="canvas-process">
@@ -962,7 +1000,6 @@ function App() {
           SIGNAL UNSTABLE
         </div>
         <div className="survival-glitch-bar" aria-hidden="true" />
-        <div className="section-index">03 / ANIMACIÓN 3D</div>
         <div className="animation-head">
           <div>
             <p className="eyebrow red">MOVIMIENTO · PERSONAJE · ESPACIO</p>
@@ -1099,7 +1136,6 @@ function App() {
           SIGNAL UNSTABLE
         </div>
         <div className="survival-glitch-bar" aria-hidden="true" />
-        <div className="section-index">04 / LO QUE APORTO</div>
         <div className="strength-layout">
           <div>
             <p className="eyebrow red">NO SOLO EJECUTO</p>
@@ -1162,7 +1198,6 @@ function App() {
           SIGNAL UNSTABLE
         </div>
         <div className="survival-glitch-bar" aria-hidden="true" />
-        <div className="section-index light">05 / PROCESO</div>
         <div className="process-head">
           <h2>
             DEL RUIDO
