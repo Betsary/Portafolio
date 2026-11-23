@@ -952,12 +952,7 @@ function App() {
             </button>
           </div>
 
-          {currentVisibleItem && (
-            <p className="text-[10px] tracking-[0.12em] text-[#aaa] mt-6 text-center max-w-xl">
-              LOG [{currentVisibleItem.category}] // {currentVisibleItem.logNote}
-            </p>
-          )}
-          <p className="stack-hint">[ USA ← / → O LOS CONTROLES PARA RECORRER EL ARCHIVO ]</p>
+
         </div>
 
         <div className="canvas-process">
